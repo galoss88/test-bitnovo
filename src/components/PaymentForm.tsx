@@ -29,7 +29,9 @@ export default function PaymentForm({
 }: PaymentFormProps) {
   return (
     <div className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-xl">
-      <h2 className="text-2xl font-semibold text-center mb-6">Crear pago</h2>
+      <h2 className="text-2xl font-semibold text-center mb-6 text-black">
+        Crear pago
+      </h2>
 
       {/* Campo de importe */}
       <div className="mb-4">
@@ -41,7 +43,7 @@ export default function PaymentForm({
           placeholder="Añade importe a pagar"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
-          className="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300"
+          className="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 text-black"
         />
       </div>
 
@@ -57,13 +59,13 @@ export default function PaymentForm({
 
       {/* Campo de concepto */}
       <div className="mb-6">
-        <label className="block text-gray-700 font-medium mb-2">Concepto</label>
+        <label className="block text-black font-medium mb-2">Concepto</label>
         <input
           type="text"
           placeholder="Añade descripción del pago"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300"
+          className="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 text-black"
         />
       </div>
 

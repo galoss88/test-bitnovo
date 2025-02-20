@@ -48,12 +48,12 @@ export default function CurrencySelector({
               alt={selectedCurrency.name}
               className="w-6 h-6 mr-2"
             />
-            <span>
+            <span className="text-sm text-black">
               {selectedCurrency.name} ({selectedCurrency.symbol})
             </span>
           </div>
         ) : (
-          <span className="text-gray-500">Selecciona una moneda</span>
+          <span className="text-sm text-black">Selecciona una moneda</span>
         )}
         <span className="text-gray-400">▼</span>
       </button>
@@ -62,7 +62,7 @@ export default function CurrencySelector({
           {currencies.map((currency) => (
             <div
               key={currency.id}
-              className="flex items-center p-2 cursor-pointer hover:bg-gray-100"
+              className="flex items-center p-2 cursor-pointer hover:bg-gray-100 text-black"
               onClick={() => {
                 setSelectedCurrency(currency);
                 setIsOpen(false);
@@ -73,7 +73,7 @@ export default function CurrencySelector({
                 alt={currency.name}
                 className="w-6 h-6 mr-2"
               />
-              <span>
+              <span className="text-sm text-black">
                 {currency.name} ({currency.symbol})
               </span>
             </div>
