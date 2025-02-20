@@ -2,6 +2,7 @@
 
 import { ICurrency } from "@/lib/api/currencies";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { IoChevronDown } from "react-icons/io5";
 
 interface CurrencySelectorProps {
   currencies: ICurrency[];
@@ -38,7 +39,7 @@ export default function CurrencySelector({
         Seleccionar moneda
       </label>
       <button
-        className="w-full flex items-center justify-between border rounded-lg p-2 bg-white shadow-sm focus:outline-none"
+        className="w-full flex items-center justify-between border border-gray-300 rounded-lg p-3 bg-white shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
         onClick={() => setIsOpen(!isOpen)}
       >
         {selectedCurrency ? (
@@ -48,21 +49,21 @@ export default function CurrencySelector({
               alt={selectedCurrency.name}
               className="w-6 h-6 mr-2"
             />
-            <span className="text-sm text-black">
+            <span className="text-sm font-medium text-gray-900">
               {selectedCurrency.name} ({selectedCurrency.symbol})
             </span>
           </div>
         ) : (
-          <span className="text-sm text-black">Selecciona una moneda</span>
+          <span className="text-sm text-gray-400">Selecciona una moneda</span>
         )}
-        <span className="text-gray-400">▼</span>
+        <IoChevronDown className="text-gray-500" size={18} />
       </button>
       {isOpen && (
-        <div className="absolute w-full mt-2 bg-white border rounded-lg shadow-lg max-h-60 overflow-auto z-10">
+        <div className="absolute w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-auto z-10">
           {currencies.map((currency) => (
             <div
               key={currency.id}
-              className="flex items-center p-2 cursor-pointer hover:bg-gray-100 text-black"
+              className="flex items-center p-3 cursor-pointer hover:bg-gray-100 transition"
               onClick={() => {
                 setSelectedCurrency(currency);
                 setIsOpen(false);
@@ -73,9 +74,7 @@ export default function CurrencySelector({
                 alt={currency.name}
                 className="w-6 h-6 mr-2"
               />
-              <span className="text-sm text-black">
-                {currency.name} ({currency.symbol})
-              </span>
+              <span className="text-sm text-gray-900">{currency.name}</span>
             </div>
           ))}
         </div>
