@@ -4,7 +4,7 @@ import { CreateOrderParams, IGetOrderInfo, IOrder } from "./types";
 export async function getOrderInfo(orderId: string): Promise<IGetOrderInfo> {
   try {
     const response = await apiClient.get(`/orders/info/${orderId}`);
-    return response.data;
+    return response.data[0];
   } catch (error) {
     console.error("❌ Error obteniendo información del pedido:", error);
     throw error;
