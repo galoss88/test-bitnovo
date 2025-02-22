@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import { IGetOrderInfo } from "./api/types";
 
 export default function useWebSocket(
-  orderId: string,
   identifier: string,
   onUpdate: (order: Partial<IGetOrderInfo>) => void
 ) {
@@ -11,10 +10,8 @@ export default function useWebSocket(
   const router = useRouter();
 
   useEffect(() => {
-    if (!orderId || !identifier) {
-      console.warn(
-        "⚠️ WebSocket no se inició: `orderId` o `identifier` inválido."
-      );
+    if (!identifier) {
+      console.warn("⚠️ WebSocket no iniciado: `identifier` inválido.");
       return;
     }
 
@@ -22,9 +19,7 @@ export default function useWebSocket(
       if (socketRef.current) return; // Evita conexiones duplicadas
 
       try {
-        const socket = new WebSocket(
-          `wss://payments.pre-bnvo.com/ws/${identifier}`
-        );
+        const socket = new WebSocket(`wss://payments.pre-bnvo.com/ws/${identifier}`);
         socketRef.current = socket;
 
         socket.onopen = () => {
@@ -34,6 +29,7 @@ export default function useWebSocket(
         socket.onmessage = (event) => {
           try {
             const updatedOrder: Partial<IGetOrderInfo> = JSON.parse(event.data);
+            console.log("📡 WebSocket actualización:", updatedOrder);
             onUpdate(updatedOrder);
 
             // 🔥 Redirigir si el pago expira (EX, OC)
@@ -79,5 +75,5 @@ export default function useWebSocket(
         socketRef.current.close();
       }
     };
-  }, [orderId, identifier, onUpdate, router]);
+  }, [identifier, onUpdate, router]);
 }

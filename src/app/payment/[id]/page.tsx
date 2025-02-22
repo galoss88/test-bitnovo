@@ -9,17 +9,28 @@ import { useEffect, useState } from "react";
 
 export default function PaymentPage() {
   const params = useParams();
-  const id = typeof params.id === "string" ? params.id : "";
-
+  const id = typeof params.id === "string" ? params.id : null;
   const [order, setOrder] = useState<IGetOrderInfo | null>(null);
+  const [identifier, setIdentifier] = useState<string>("");
+  const [paymentUri, setPaymentUri] = useState<string | null>(null);
 
   useEffect(() => {
     if (!id) return;
 
     async function fetchOrder() {
       try {
+        if (!id) return;
+        console.log(`📡 Obteniendo información de la orden ${id}`);
         const data = await getOrderInfo(id);
         setOrder(data);
+        setIdentifier(data.identifier);
+
+        // ✅ Intentar recuperar `payment_uri` desde localStorage si no está en la orden
+        const storedPaymentUri = localStorage.getItem(`payment_uri`);
+        console.log("aca payment", storedPaymentUri);
+        if (storedPaymentUri) {
+          setPaymentUri(storedPaymentUri);
+        }
       } catch (error) {
         console.error("❌ Error obteniendo la orden:", error);
       }
@@ -27,34 +38,21 @@ export default function PaymentPage() {
 
     fetchOrder();
   }, [id]);
-  const onUpdate = (updatedOrder: Partial<IGetOrderInfo>) => {
-    setOrder((prevOrder: any) => {
+
+  // ✅ Llamar `useWebSocket` correctamente después de obtener el `identifier`
+  useWebSocket(identifier, (updatedOrder: Partial<IGetOrderInfo>) => {
+    setOrder((prevOrder) => {
       if (!prevOrder) return { ...updatedOrder } as IGetOrderInfo;
 
       return {
         ...prevOrder,
         ...updatedOrder,
-        // payment_uri: updatedOrder.payment_uri ?? prevOrder.payment_uri,
-        // address: updatedOrder.address ?? prevOrder.address,
+        address: updatedOrder.address ?? prevOrder.address,
       };
     });
-  };
-  useWebSocket(order?.identifier ?? "", order?.identifier ?? "", onUpdate);
-
-  // useWebSocket(id, order?.identifier ?? "", (updatedOrder: Partial<IOrder>) => {
-  //   setOrder((prevOrder) => {
-  //     if (!prevOrder) return { ...updatedOrder } as IOrder;
-
-  //     return {
-  //       ...prevOrder,
-  //       ...updatedOrder,
-  //       payment_uri: updatedOrder.payment_uri ?? prevOrder.payment_uri,
-  //       address: updatedOrder.address ?? prevOrder.address,
-  //     };
-  //   });
-  // });
+  });
 
   if (!order) return <p className="text-center text-gray-500">Cargando...</p>;
 
-  return <QRPayment order={order} />;
+  return <QRPayment order={order} paymentUri={paymentUri} />;
 }

@@ -5,17 +5,21 @@ import { QRCodeCanvas } from "qrcode.react";
 
 interface QRPaymentProps {
   order: IGetOrderInfo;
+  paymentUri: string | null; // ✅ Ahora puede recibir `payment_uri`
 }
 
-export default function QRPayment({ order }: QRPaymentProps) {
+export default function QRPayment({ order, paymentUri }: QRPaymentProps) {
+  console.log("order", order, paymentUri); // ✅ Usamos `clog` en lugar de `console.log`
+  const qrValue = paymentUri ?? order.address; // ✅ Usamos `paymentUri` primero, luego `order.address`
+
   return (
     <div className="flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-md max-w-lg mx-auto">
       <h2 className="text-xl font-semibold mb-4 text-gray-900">
         Escanea el QR para pagar
       </h2>
 
-      {order.address ? (
-        <QRCodeCanvas value={order.address} size={200} />
+      {qrValue ? (
+        <QRCodeCanvas value={qrValue} size={200} />
       ) : (
         <p className="text-sm text-gray-500">QR no disponible</p>
       )}
