@@ -34,12 +34,14 @@ export default function Home() {
       if (!selectedCurrency) {
         throw new Error("Debe seleccionar una criptomoneda");
       }
+
       const order = await createOrder({
-        amount,
-        currency: selectedCurrency.id,
-        description,
+        expected_output_amount: parseFloat(amount), // 🔹 Asegura que sea número
+        input_currency: selectedCurrency.id, // 🔹 Usar input_currency según API
+        notes: description, // 🔹 En la API se llama "notes"
       });
-      router.push(`/payment/${order.id}`);
+
+      router.push(`/payment/${order.identifier}`); // Asegura que sea "identifier"
     } catch (error) {
       console.error("Error creando el pago", error);
     } finally {

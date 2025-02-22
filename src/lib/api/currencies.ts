@@ -12,14 +12,7 @@ export interface ICurrency {
 
 export async function getCurrencies(): Promise<ICurrency[]> {
   try {
-    const response = await apiClient.get(
-      "https://payments.pre-bnvo.com/api/v1/currencies",
-      {
-        headers: {
-          "X-Device-Id": "d6aac8e9-ed6c-4135-a5c7-f3b4bba5c31b", // Reemplázalo con el valor correcto
-        },
-      }
-    );
+    const response = await apiClient.get("/currencies");
 
     return response.data.map((currency: ICurrency) => ({
       id: currency.symbol, // 🔹 Se usa el `symbol` como identificador único
