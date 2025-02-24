@@ -12,7 +12,7 @@ apiClient.interceptors.request.use(
     // ✅ Verificamos si estamos en el cliente antes de acceder a localStorage
     let deviceId =
       process.env.NEXT_PUBLIC_DEVICE_ID ||
-      "d6aac8e9-ed6c-4135-a5c7-f3b4bba5c31b"; // ✅ Valor por defecto desde las variables de entorno
+      "d6aac8e9-ed6c-4135-a5c7-f3b4bba5c31b";
 
     if (typeof window !== "undefined") {
       const storedDeviceId = localStorage.getItem("device_id");
