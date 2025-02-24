@@ -19,7 +19,7 @@ const PaymentMethodToggle: React.FC<PaymentMethodToggleProps> = ({
             ${
               selectedIndex === index
                 ? "bg-blue-600 text-white shadow-md"
-                : "bg-gray-100 text-gray-500"
+                : "bg-gray-50 text-gray-500  opacity-95 font-bold"
             }`}
           aria-pressed={selectedIndex === index}
           aria-label={option}

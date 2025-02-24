@@ -18,9 +18,6 @@ interface ResumeOrderProps {
 
 const ResumeOrder = ({ resumeOrderItems }: ResumeOrderProps) => (
   <div className="bg-gray-100 bg-opacity-80 rounded-xl p-6">
-    <h1 className="text-xl text-primary font-bold mb-4">
-      Resumen del pedido
-    </h1>
     <div className="space-y-4">
       {resumeOrderItems.map((item) => (
         <ResumeItem key={item.label} {...item} />

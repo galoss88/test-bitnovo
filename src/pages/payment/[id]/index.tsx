@@ -109,11 +109,17 @@ export default function PaymentPage() {
       <div className="container mx-auto p-6 flex flex-col md:flex-row justify-center gap-8">
         {/* Resumen del pedido */}
         <div className="w-full md:w-1/2 bg-white p-6 rounded-xl">
+          <h1 className="text-xl text-primary font-bold mb-4">
+            Resumen del pedido
+          </h1>
           <ResumeOrder resumeOrderItems={resumeOrderItems} />
         </div>
 
         {/* Sección de Pago */}
-        <div className="w-full md:w-1/2 bg-white p-6 rounded-xl shadow-lg">
+        <div className="w-full md:w-1/2 bg-white p-6 rounded-xl ">
+          <h1 className="text-xl text-primary font-bold mb-4">
+            Realiza el pago
+          </h1>
           <MakePayment />
         </div>
       </div>
