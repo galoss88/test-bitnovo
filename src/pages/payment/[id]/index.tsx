@@ -67,14 +67,6 @@ export default function PaymentPage() {
       label: "Moneda seleccionada",
       value: (
         <div className="flex items-center gap-2">
-          {/* Imagen de la moneda si está disponible */}
-          {/* {updatedOrder.currency_logo && (
-            <img
-              src={updatedOrder.currency_logo}
-              alt={updatedOrder.currency_id}
-              className="w-5 h-5"
-            />
-          )} */}
           <div className="flex items-center">
             <img
               src={selectedCurrency?.image}
@@ -85,9 +77,6 @@ export default function PaymentPage() {
               {selectedCurrency?.symbol}
             </span>
           </div>
-          {/* <span className="text-primary font-bold">
-            {updatedOrder?.currency_id}
-          </span> */}
         </div>
       ),
     },
