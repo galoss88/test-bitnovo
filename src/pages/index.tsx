@@ -1,4 +1,4 @@
-import { useCurrenciesContext } from "@/context/CurrencyProvider";
+import { useCurrenciesContext } from "@/context/Providers/CurrencyProvider";
 import { usePayment } from "@/hooks/usePayment";
 import { ICurrency } from "@/lib/api/currencies";
 import PaymentForm from "@/components/PaymentForm";

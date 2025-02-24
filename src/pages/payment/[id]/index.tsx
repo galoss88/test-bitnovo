@@ -1,4 +1,4 @@
-import { useCurrenciesContext } from "@/context/CurrencyProvider";
+import { useCurrenciesContext } from "@/context/Providers/CurrencyProvider";
 import { useOrderContext } from "@/context/OrderContext";
 import { OrderProvider } from "@/context/Providers/OrderProvider"; // ✅ Asegurar que importamos bien el Provider
 import { ICurrency } from "@/lib/api/currencies";
