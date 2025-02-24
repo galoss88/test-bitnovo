@@ -1,5 +1,3 @@
-import "@/styles/globals.css";
-
 import { usePayment } from "@/application/hooks/usePayment";
 import PaymentForm from "@/components/PaymentForm";
 import { getCurrencies, ICurrency } from "@/lib/api/currencies";

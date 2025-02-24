@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Estilos globales */
+body {
+  @apply bg-white text-gray-900; /* Fondo blanco y texto gris oscuro */
+  font-family: "Inter", sans-serif; /* Fuente predeterminada */
+}
+
+/* Estilos para el footer */
+footer {
+  @apply text-gray-400 text-sm py-4 border-t bg-white flex justify-center items-center;
+}
+
+/* Estilos para imágenes responsivas */
+img {
+  @apply max-w-full h-auto;
+}
