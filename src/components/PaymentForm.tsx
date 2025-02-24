@@ -53,7 +53,7 @@ export default function PaymentForm({
         selectedCurrency={selectedCurrency}
         setSelectedCurrency={setSelectedCurrency}
       />
-      
+
       {/* Campo de concepto */}
       <div className="mt-4 mb-6">
         <label className="block text-gray-700 font-medium mb-2">Concepto</label>
