@@ -15,7 +15,7 @@ const MakePayment = () => {
   const paymentCode = "ABC123XYZ";
   const destinationTag = "987654321";
   const options = ["Opción 1", "Opción 2"];
-  
+  if (!order) return null;
   return (
     <div className="flex flex-col items-center text-black p-6 bg-white rounded-lg shadow-md max-w-lg mx-auto">
       <TimeReloj className="text-xl" />
