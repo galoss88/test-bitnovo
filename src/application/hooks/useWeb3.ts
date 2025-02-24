@@ -1,39 +1,49 @@
-import { useState } from "react";
-import { ethers } from "ethers";
+import { BrowserProvider, JsonRpcSigner, parseEther } from "ethers";
+import { useEffect, useState } from "react";
 
 export const useWeb3 = () => {
+  const [provider, setProvider] = useState<BrowserProvider | null>(null);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [isConnected, setIsConnected] = useState(false);
 
-  const connectWallet = async () => {
+  useEffect(() => {
     if (window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-        setWalletAddress(accounts[0]);
-        setIsConnected(true);
-      } catch (error) {
-        console.error("Error conectando la wallet:", error);
-      }
-    } else {
-      alert("Por favor, instala Metamask.");
+      setProvider(new BrowserProvider(window.ethereum));
+    }
+  }, []);
+
+  const connectWallet = async () => {
+    if (!provider) {
+      alert("Metamask no está instalado.");
+      return;
+    }
+    try {
+      const accounts = await provider.send("eth_requestAccounts", []);
+      setWalletAddress(accounts[0]);
+      setIsConnected(true);
+    } catch (error) {
+      console.error("Error conectando la wallet:", error);
     }
   };
 
-  const sendTransaction = async (order: any) => {
-    if (!window.ethereum) return alert("Instala Metamask");
+  const sendTransaction = async (order: {
+    address: string;
+    crypto_amount: number;
+  }) => {
+    if (!provider || !walletAddress) return;
 
     try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-
+      const signer: JsonRpcSigner = await provider.getSigner();
       const tx = await signer.sendTransaction({
         to: order.address,
-        value: ethers.parseEther(order.fiat_amount.toString()),
+        value: parseEther(order.crypto_amount.toString()),
       });
 
-      console.log("Transacción enviada:", tx);
+      console.log("📡 Transacción enviada:", tx);
+      await tx.wait();
+      console.log("✅ Transacción confirmada.");
     } catch (error) {
-      console.error("Error al enviar la transacción:", error);
+      console.error("❌ Error en la transacción:", error);
     }
   };
 
