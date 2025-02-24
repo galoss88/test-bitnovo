@@ -7,7 +7,6 @@ function savePaymentData(order: IOrder) {
   }
 }
 
-// ✅ Función de servicio para crear un pago
 export async function createPayment(
   params: CreateOrderParams
 ): Promise<IOrder> {
