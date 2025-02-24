@@ -9,10 +9,15 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-    const deviceId =
-      typeof window !== "undefined"
-        ? localStorage.getItem("device_id") || process.env.NEXT_PUBLIC_DEVICE_ID
-        : process.env.NEXT_PUBLIC_DEVICE_ID;
+    // ✅ Verificamos si estamos en el cliente antes de acceder a localStorage
+    let deviceId = process.env.NEXT_PUBLIC_DEVICE_ID; // ✅ Valor por defecto desde las variables de entorno
+
+    if (typeof window !== "undefined") {
+      const storedDeviceId = localStorage.getItem("device_id");
+      if (storedDeviceId) {
+        deviceId = storedDeviceId;
+      }
+    }
 
     if (deviceId) {
       config.headers["X-Device-Id"] = deviceId;
