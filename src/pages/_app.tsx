@@ -1,8 +1,8 @@
 import "@/styles/globals.css";
 
 import type { AppProps } from "next/app";
-import Footer from "../components/Footer";
-import { CurrencyProvider } from "@/components/CurrencyProvider";
+import Footer from "./layout/Footer";
+import { CurrencyProvider } from "@/pages/_components/CurrencyProvider";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
