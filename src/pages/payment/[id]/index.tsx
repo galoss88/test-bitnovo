@@ -1,16 +1,18 @@
 "use client";
 
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCurrenciesContext } from "@/application/context/CurrencyProvider";
+import OrderContext from "@/application/context/OrderContext";
 import { useOrder } from "@/application/hooks/useOrder";
 import useWebSocket from "@/application/hooks/useWebSocket";
 import MakePayment from "@/components/MakePayment";
 import ResumeOrder from "@/components/Resume";
-import OrderContext from "@/application/context/OrderContext";
 import { IGetOrderInfo } from "@/lib/api/types";
 import { formatDate } from "@/utils/formatDate";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export default function PaymentPage() {
+  const { currencies } = useCurrenciesContext();
   const router = useRouter();
   const { id } = router.query;
 
@@ -48,7 +50,9 @@ export default function PaymentPage() {
       </div>
     );
   }
-
+  const selectedCurrency = currencies.find((currency) => {
+    return currency.id === updatedOrder.currency_id;
+  });
   // 📌 Formato de la información para el resumen del pedido
   const resumeOrderItems = [
     {
@@ -71,9 +75,19 @@ export default function PaymentPage() {
               className="w-5 h-5"
             />
           )} */}
-          <span className="text-primary font-bold">
+          <div className="flex items-center">
+            <img
+              src={selectedCurrency?.image}
+              alt={selectedCurrency?.name}
+              className="w-6 h-6 mr-2"
+            />
+            <span className="text-sm text-primary font-bold">
+              {selectedCurrency?.symbol}
+            </span>
+          </div>
+          {/* <span className="text-primary font-bold">
             {updatedOrder?.currency_id}
-          </span>
+          </span> */}
         </div>
       ),
     },
