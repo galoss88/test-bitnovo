@@ -1,7 +1,7 @@
-//borrar despues
-import "@/styles/globals.css";
+"use client";
 
-import { useRouter } from "next/router"; // ⬅️ Cambio importante
+import "@/styles/globals.css";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { useOrder } from "@/application/hooks/useOrder";
@@ -13,12 +13,9 @@ import { IGetOrderInfo } from "@/lib/api/types";
 import { formatDate } from "@/utils/formatDate";
 
 export default function PaymentPage() {
-  const router = useRouter(); // ⬅️ Usar useRouter() en lugar de useParams()
-  const { id } = router.query; // ⬅️ Extraer `id` correctamente
+  const router = useRouter();
+  const { id } = router.query;
 
-  console.log("ID recibido:", id); // ⬅️ Depuración
-
-  // Manejo de estados
   const { order, loading } = useOrder(id as string);
   const [updatedOrder, setUpdatedOrder] = useState<IGetOrderInfo | null>(null);
   const [paymentUri, setPaymentUri] = useState<string | null>(null);
@@ -26,8 +23,7 @@ export default function PaymentPage() {
   useEffect(() => {
     if (order) {
       setUpdatedOrder(order);
-      const storedPaymentUri = localStorage.getItem(`payment_uri`);
-      setPaymentUri(storedPaymentUri || null);
+      setPaymentUri(localStorage.getItem(`payment_uri`) || null);
     }
   }, [order]);
 
@@ -39,34 +35,88 @@ export default function PaymentPage() {
     );
   });
 
-  if (loading) return <p className="text-center text-gray-500">Cargando...</p>;
-  if (!updatedOrder)
+  if (loading) {
     return (
-      <p className="text-center text-red-500">Error obteniendo la orden</p>
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-center text-gray-500">Cargando...</p>
+      </div>
     );
+  }
 
+  if (!updatedOrder) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-center text-red-500">Error obteniendo la orden</p>
+      </div>
+    );
+  }
+
+  // 📌 Formato de la información para el resumen del pedido
   const resumeOrderItems = [
     {
       label: "Importe",
-      value: `${updatedOrder?.fiat_amount.toFixed(2)} ${updatedOrder?.fiat}`,
+      value: (
+        <span className="text-primary font-bold">
+          {`${updatedOrder?.fiat_amount.toFixed(2)} ${updatedOrder?.fiat}`}
+        </span>
+      ),
     },
-    { label: "Moneda seleccionada", value: updatedOrder?.currency_id },
+    {
+      label: "Moneda seleccionada",
+      value: (
+        <div className="flex items-center gap-2">
+          {/* Imagen de la moneda si está disponible */}
+          {/* {updatedOrder.currency_logo && (
+            <img
+              src={updatedOrder.currency_logo}
+              alt={updatedOrder.currency_id}
+              className="w-5 h-5"
+            />
+          )} */}
+          <span className="text-primary font-bold">
+            {updatedOrder?.currency_id}
+          </span>
+        </div>
+      ),
+    },
     {
       label: "Comercio",
-      value: updatedOrder?.merchant_device || "Tienda de ejemplo",
+      value: (
+        <span className="text-secondary">
+          {updatedOrder?.merchant_device || "Tienda de ejemplo"}
+        </span>
+      ),
     },
     {
       label: "Fecha",
-      value: formatDate(updatedOrder?.created_at ?? "S/fecha"),
+      value: (
+        <span className="text-secondary">
+          {formatDate(updatedOrder?.created_at ?? "S/fecha")}
+        </span>
+      ),
     },
-    { label: "Concepto", value: updatedOrder?.notes || "Pago de ejemplo" },
+    {
+      label: "Concepto",
+      value: (
+        <span className="text-secondary">
+          {updatedOrder?.notes || "Pago de ejemplo"}
+        </span>
+      ),
+    },
   ];
 
   return (
     <OrderContext.Provider value={{ order: updatedOrder, paymentUri }}>
-      <div className="container mx-auto p-6 flex justify-center w-full">
-        <ResumeOrder resumeOrderItems={resumeOrderItems} />
-        <MakePayment />
+      <div className="container mx-auto p-6 flex flex-col md:flex-row justify-center gap-8">
+        {/* Resumen del pedido */}
+        <div className="w-full md:w-1/2 bg-white p-6 rounded-xl">
+          <ResumeOrder resumeOrderItems={resumeOrderItems} />
+        </div>
+
+        {/* Sección de Pago */}
+        <div className="w-full md:w-1/2 bg-white p-6 rounded-xl shadow-lg">
+          <MakePayment />
+        </div>
       </div>
     </OrderContext.Provider>
   );

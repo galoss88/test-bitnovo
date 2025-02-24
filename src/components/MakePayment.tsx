@@ -26,11 +26,11 @@ const MakePayment = () => {
     console.warn("⏳ Tiempo agotado, redirigiendo a /payment/expired");
     router.push("/payment/expired");
   }, [router]);
-  
+
   if (!order) return null;
 
   return (
-    <div className="flex flex-col items-center text-black p-6 bg-white rounded-lg shadow-md max-w-lg mx-auto">
+    <div className="bg-white p-6 rounded-xl flex flex-col items-center">
       {/* ⏳ Temporizador con tiempo real basado en `expired_time` */}
       <TimeReloj
         className="text-xl"
