@@ -7,7 +7,6 @@ const apiClient = axios.create({
   },
 });
 
-// Interceptor para agregar el X-Device-Id dinámicamente
 apiClient.interceptors.request.use(
   (config) => {
     const deviceId =
