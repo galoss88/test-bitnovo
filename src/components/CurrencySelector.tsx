@@ -39,11 +39,13 @@ export default function CurrencySelector({
   }, []);
 
   // Filtrar monedas según la búsqueda con debounce
-  const filteredCurrencies = currencies.filter(
-    (currency) =>
-      currency.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-      currency.symbol.toLowerCase().includes(debouncedSearch.toLowerCase())
-  );
+  const filteredCurrencies =
+    currencies &&
+    currencies?.filter(
+      (currency) =>
+        currency.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        currency.symbol.toLowerCase().includes(debouncedSearch.toLowerCase())
+    );
 
   return (
     <div className="relative w-full max-w-md mx-auto" ref={dropdownRef}>
@@ -100,8 +102,8 @@ export default function CurrencySelector({
 
           {/* Lista de monedas */}
           <div className="divide-y divide-gray-100">
-            {filteredCurrencies.length > 0 ? (
-              filteredCurrencies.map((currency) => (
+            {filteredCurrencies && filteredCurrencies.length > 0 ? (
+              filteredCurrencies?.map((currency) => (
                 <div
                   key={currency.id}
                   className={`flex items-center justify-between p-3 cursor-pointer transition ${

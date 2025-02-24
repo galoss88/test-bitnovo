@@ -1,4 +1,4 @@
-import StatusIcon from "@/pages/_components/StatusIcon";
+import StatusIcon from "@/components/StatusIcon";
 import Link from "next/link";
 
 export default function PaymentExpired() {

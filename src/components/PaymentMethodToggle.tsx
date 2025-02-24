@@ -11,22 +11,23 @@ const PaymentMethodToggle: React.FC<PaymentMethodToggleProps> = ({
 }) => {
   return (
     <div className="flex gap-2 mt-4">
-      {options.map((option, index) => (
-        <button
-          key={index}
-          onClick={() => onChange(index)}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all 
+      {options &&
+        options?.map((option, index) => (
+          <button
+            key={option}
+            onClick={() => onChange(index)}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all 
             ${
               selectedIndex === index
                 ? "bg-blue-600 text-white shadow-md"
                 : "bg-gray-50 text-gray-500  opacity-95 font-bold"
             }`}
-          aria-pressed={selectedIndex === index}
-          aria-label={option}
-        >
-          {option}
-        </button>
-      ))}
+            aria-pressed={selectedIndex === index}
+            aria-label={option}
+          >
+            {option}
+          </button>
+        ))}
     </div>
   );
 };

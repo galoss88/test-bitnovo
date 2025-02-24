@@ -1,39 +1,32 @@
-"use client";
-
 import { useCurrenciesContext } from "@/context/CurrencyProvider";
-import OrderContext from "@/context/OrderContext";
-import { useOrder } from "@/hooks/useOrder";
-import useWebSocket from "@/hooks/useWebSocket";
-import MakePayment from "@/pages/payment/[id]/_components/MakePayment";
-import ResumeOrder from "@/pages/payment/[id]/_components/ResumeOrder";
-import { IGetOrderInfo } from "@/lib/api/types";
+import { useOrderContext } from "@/context/OrderContext";
+import { OrderProvider } from "@/context/Providers/OrderProvider"; // ✅ Asegurar que importamos bien el Provider
+import { ICurrency } from "@/lib/api/currencies";
 import { formatDate } from "@/utils/formatDate";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import MakePayment from "../../../components/MakePayment";
+import ResumeOrder from "../../../components/ResumeOrder";
 
 export default function PaymentPage() {
   const { currencies } = useCurrenciesContext();
   const router = useRouter();
-  const { id } = router.query;
+  const id = Array.isArray(router.query.id)
+    ? router.query.id[0]
+    : router.query.id ?? ""; // ✅ Convertimos a string correctamente
 
-  const { order, loading } = useOrder(id as string);
-  const [updatedOrder, setUpdatedOrder] = useState<IGetOrderInfo | null>(null);
-  const [paymentUri, setPaymentUri] = useState<string | null>(null);
+  return (
+    <OrderProvider orderId={id}>
+      <PaymentContent currencies={currencies} />
+    </OrderProvider>
+  );
+}
 
-  useEffect(() => {
-    if (order) {
-      setUpdatedOrder(order);
-      setPaymentUri(localStorage.getItem(`payment_uri`) || null);
-    }
-  }, [order]);
+interface PaymentContentProps {
+  currencies: ICurrency[];
+}
 
-  // WebSocket para recibir actualizaciones en tiempo real
-  useWebSocket(updatedOrder?.identifier ?? "", (data) => {
-    // console.log("🔄 Actualización de pedido recibida:", data);
-    setUpdatedOrder((prev) =>
-      prev ? { ...prev, ...data } : (data as IGetOrderInfo)
-    );
-  });
+function PaymentContent({ currencies }: PaymentContentProps) {
+  const { order, loading } = useOrderContext(); // ✅ Ahora sí está dentro de OrderProvider
 
   if (loading) {
     return (
@@ -43,88 +36,57 @@ export default function PaymentPage() {
     );
   }
 
-  if (!updatedOrder) {
+  if (!order) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p className="text-center text-red-500">Error obteniendo la orden</p>
       </div>
     );
   }
-  const selectedCurrency = currencies.find((currency) => {
-    return currency.id === updatedOrder.currency_id;
-  });
-  // 📌 Formato de la información para el resumen del pedido
+
+  const selectedCurrency = (currencies || []).find(
+    (currency) => currency.id === order.currency_id
+  );
+
   const resumeOrderItems = [
     {
       label: "Importe",
-      value: (
-        <span className="text-primary font-bold">
-          {`${updatedOrder?.fiat_amount.toFixed(2)} ${updatedOrder?.fiat}`}
-        </span>
-      ),
+      value: `${order.fiat_amount.toFixed(2)} ${order.fiat}`,
     },
     {
       label: "Moneda seleccionada",
-      value: (
+      value: selectedCurrency ? (
         <div className="flex items-center gap-2">
-          <div className="flex items-center">
-            <img
-              src={selectedCurrency?.image}
-              alt={selectedCurrency?.name}
-              className="w-6 h-6 mr-2"
-            />
-            <span className="text-sm text-primary font-bold">
-              {selectedCurrency?.symbol}
-            </span>
-          </div>
+          <img
+            src={selectedCurrency.image}
+            alt={selectedCurrency.name}
+            className="w-6 h-6 mr-2"
+          />
+          <span className="text-sm text-primary font-bold">
+            {selectedCurrency.symbol}
+          </span>
         </div>
+      ) : (
+        "N/A"
       ),
     },
-    {
-      label: "Comercio",
-      value: (
-        <span className="text-secondary">
-          {updatedOrder?.merchant_device || "Tienda de ejemplo"}
-        </span>
-      ),
-    },
-    {
-      label: "Fecha",
-      value: (
-        <span className="text-secondary">
-          {formatDate(updatedOrder?.created_at ?? "S/fecha")}
-        </span>
-      ),
-    },
-    {
-      label: "Concepto",
-      value: (
-        <span className="text-secondary">
-          {updatedOrder?.notes || "Pago de ejemplo"}
-        </span>
-      ),
-    },
+    { label: "Comercio", value: order.merchant_device || "Tienda de ejemplo" },
+    { label: "Fecha", value: formatDate(order.created_at ?? "S/fecha") },
+    { label: "Concepto", value: order.notes || "Pago de ejemplo" },
   ];
 
   return (
-    <OrderContext.Provider value={{ order: updatedOrder, paymentUri }}>
-      <div className="container mx-auto p-6 flex flex-col md:flex-row justify-center gap-8">
-        {/* Resumen del pedido */}
-        <div className="w-full md:w-1/2 bg-white p-6 rounded-xl">
-          <h1 className="text-xl text-primary font-bold mb-4">
-            Resumen del pedido
-          </h1>
-          <ResumeOrder resumeOrderItems={resumeOrderItems} />
-        </div>
-
-        {/* Sección de Pago */}
-        <div className="w-full md:w-1/2 bg-white p-6 rounded-xl ">
-          <h1 className="text-xl text-primary font-bold mb-4">
-            Realiza el pago
-          </h1>
-          <MakePayment />
-        </div>
+    <div className="container mx-auto p-6 flex flex-col md:flex-row justify-center gap-8">
+      <div className="w-full md:w-1/2 bg-white p-6 rounded-xl">
+        <h1 className="text-xl text-primary font-bold mb-4">
+          Resumen del pedido
+        </h1>
+        <ResumeOrder resumeOrderItems={resumeOrderItems} />
       </div>
-    </OrderContext.Provider>
+      <div className="w-full md:w-1/2 bg-white p-6 rounded-xl">
+        <h1 className="text-xl text-primary font-bold mb-4">Realiza el pago</h1>
+        <MakePayment />
+      </div>
+    </div>
   );
 }

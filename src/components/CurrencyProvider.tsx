@@ -10,3 +10,4 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
     </CurrencyContext.Provider>
   );
 }
+export default CurrencyProvider;

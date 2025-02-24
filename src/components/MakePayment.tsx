@@ -2,12 +2,12 @@ import { useOrderContext } from "@/context/OrderContext";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { MdErrorOutline } from "react-icons/md";
-import CopyableField from "../../../_components/CopyableField";
-import PaymentCryptoDetail from "../../../_components/PaymentCryptoDetail";
-import PaymentMethodToggle from "../../../_components/PaymentMethodToggle";
-import QRPayment from "../../../_components/QRPayment";
-import TimeReloj from "../../../_components/TimeReloj";
-import Web3Payment from "../../../_components/Web3Payment";
+import CopyableField from "./CopyableField";
+import PaymentCryptoDetail from "./PaymentCryptoDetail";
+import PaymentMethodToggle from "./PaymentMethodToggle";
+import QRPayment from "./QRPayment";
+import TimeReloj from "./TimeReloj";
+import Web3Payment from "./Web3Payment";
 
 const MakePayment = () => {
   const { order, paymentUri } = useOrderContext();

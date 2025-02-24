@@ -1,7 +1,7 @@
 import { useCurrenciesContext } from "@/context/CurrencyProvider";
 import { usePayment } from "@/hooks/usePayment";
 import { ICurrency } from "@/lib/api/currencies";
-import PaymentForm from "@/pages/_components/PaymentForm";
+import PaymentForm from "@/components/PaymentForm";
 import { useCallback, useState } from "react";
 
 export default function Home() {
