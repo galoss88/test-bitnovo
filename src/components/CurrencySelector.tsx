@@ -35,7 +35,7 @@ export default function CurrencySelector({
 
   return (
     <div className="relative mt-4" ref={dropdownRef}>
-      <label className="block text-sm font-medium text-gray-700 mb-2">
+      <label className="block text-primary font-bold mb-2">
         Seleccionar moneda
       </label>
       <button
@@ -49,7 +49,7 @@ export default function CurrencySelector({
               alt={selectedCurrency.name}
               className="w-6 h-6 mr-2"
             />
-            <span className="text-sm font-medium text-gray-900">
+            <span className="text-sm font-medium text-primary">
               {selectedCurrency.name} ({selectedCurrency.symbol})
             </span>
           </div>

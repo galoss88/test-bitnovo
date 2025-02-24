@@ -29,13 +29,13 @@ export default function PaymentForm({
 }: PaymentFormProps) {
   return (
     <div className="max-w-lg mx-auto p-8 bg-white shadow-lg rounded-2xl border border-gray-200">
-      <h2 className="text-2xl font-semibold text-center mb-6 text-gray-900">
+      <h2 className="text-2xl font-semibold text-center mb-6 text-primary font-bold">
         Crear pago
       </h2>
 
       {/* Campo de importe */}
       <div className="mb-4">
-        <label className="block text-gray-700 font-medium mb-2">
+        <label className="block text-primary font-bold mb-2">
           Importe a pagar
         </label>
         <input
@@ -56,13 +56,13 @@ export default function PaymentForm({
 
       {/* Campo de concepto */}
       <div className="mt-4 mb-6">
-        <label className="block text-gray-700 font-medium mb-2">Concepto</label>
+        <label className="block text-primary font-bold mb-2">Concepto</label>
         <input
           type="text"
           placeholder="Añade descripción del pago"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 text-black"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:text-primary text-primary"
         />
       </div>
 
@@ -72,7 +72,7 @@ export default function PaymentForm({
         disabled={loading || !amount || !description || !selectedCurrency}
         className={`w-full p-3 rounded-lg text-white font-medium transition ${
           amount && description && selectedCurrency
-            ? "bg-blue-600 hover:bg-blue-700"
+            ? "bg-blue-700 hover:bg-blue-700"
             : "bg-blue-300 cursor-not-allowed"
         }`}
       >

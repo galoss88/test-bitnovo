@@ -13,12 +13,13 @@ const PaymentCryptoDetail = ({
   return (
     <div className="mt-4 text-center">
       <div className="flex items-center justify-center gap-2 text-lg font-medium">
-        <span>
+        <span className="text-primary font-semibold">
           Enviar{" "}
-          <strong>
+          <strong className="text-primary font-bold">
             {amount.toFixed(2)} {currency}
           </strong>
         </span>
+
         <button
           onClick={handleCopy}
           className="p-2 bg-gray-200 rounded hover:bg-gray-300"
