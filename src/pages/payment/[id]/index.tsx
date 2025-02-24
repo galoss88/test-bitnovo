@@ -1,9 +1,9 @@
 "use client";
 
-import { useCurrenciesContext } from "@/application/context/CurrencyProvider";
-import OrderContext from "@/application/context/OrderContext";
-import { useOrder } from "@/application/hooks/useOrder";
-import useWebSocket from "@/application/hooks/useWebSocket";
+import { useCurrenciesContext } from "@/context/CurrencyProvider";
+import OrderContext from "@/context/OrderContext";
+import { useOrder } from "@/hooks/useOrder";
+import useWebSocket from "@/hooks/useWebSocket";
 import MakePayment from "@/pages/payment/[id]/_components/MakePayment";
 import ResumeOrder from "@/pages/payment/[id]/_components/ResumeOrder";
 import { IGetOrderInfo } from "@/lib/api/types";

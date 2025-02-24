@@ -1,4 +1,4 @@
-import apiClient from "@/infraestructure/apiClient";
+import apiClient from "@/api/apiClient";
 import { CreateOrderParams, IOrder } from "@/lib/api/types";
 
 function savePaymentData(order: IOrder) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useDebouncedSearch } from "@/application/hooks/useDebouncedSearch";
+import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
 import { ICurrency } from "@/lib/api/currencies";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { IoCheckmarkCircle, IoChevronForward, IoClose } from "react-icons/io5";

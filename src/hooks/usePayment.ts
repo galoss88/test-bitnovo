@@ -1,5 +1,5 @@
 import { IOrder } from "@/lib/api/types";
-import { createPayment } from "@/application/services/PaymentService";
+import { createPayment } from "@/services/PaymentService";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

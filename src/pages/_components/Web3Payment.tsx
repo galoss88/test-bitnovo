@@ -1,4 +1,4 @@
-import { useWeb3 } from "@/application/hooks/useWeb3";
+import { useWeb3 } from "@/hooks/useWeb3";
 import { IGetOrderInfo } from "@/lib/api/types";
 import Image from "next/image";
 

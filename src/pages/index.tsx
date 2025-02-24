@@ -1,5 +1,5 @@
-import { useCurrenciesContext } from "@/application/context/CurrencyProvider";
-import { usePayment } from "@/application/hooks/usePayment";
+import { useCurrenciesContext } from "@/context/CurrencyProvider";
+import { usePayment } from "@/hooks/usePayment";
 import { ICurrency } from "@/lib/api/currencies";
 import PaymentForm from "@/pages/_components/PaymentForm";
 import { useCallback, useState } from "react";

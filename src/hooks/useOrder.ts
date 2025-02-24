@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { OrderService } from "@/application/services/OrderService";
+import { OrderService } from "@/services/OrderService";
 import { IGetOrderInfo } from "@/lib/api/types";
 
 export function useOrder(id: string) {

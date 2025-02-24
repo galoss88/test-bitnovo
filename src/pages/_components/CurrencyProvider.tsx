@@ -1,5 +1,5 @@
-import { CurrencyContext } from "@/application/context/CurrencyProvider";
-import { useCurrencies } from "@/application/hooks/useCurrencies";
+import { CurrencyContext } from "@/context/CurrencyProvider";
+import { useCurrencies } from "@/hooks/useCurrencies";
 
 export function CurrencyProvider({ children }: { children: React.ReactNode }) {
   const { currencies, loading, error } = useCurrencies();
