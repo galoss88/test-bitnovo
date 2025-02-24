@@ -1,18 +1,26 @@
-import { useState } from "react";
+import React from "react";
 
-// Botones para seleccionar opción de pago
-export const PaymentMethodToggle = () => {
-  const [selected, setSelected] = useState<number>(0);
-  const options = ["Opción 1", "Opción 2"];
+export interface PaymentMethodToggleProps {
+  options: string[];
+  selectedIndex: number;
+  onChange: (index: number) => void;
+  className?: string;
+}
 
+export const PaymentMethodToggle: React.FC<PaymentMethodToggleProps> = ({
+  options,
+  selectedIndex,
+  onChange,
+  className = "",
+}) => {
   return (
-    <div className="flex gap-4 mt-4">
+    <div className={`flex gap-4 mt-4 ${className}`}>
       {options.map((option, index) => (
         <button
           key={index}
-          onClick={() => setSelected(index)}
+          onClick={() => onChange(index)}
           className={`px-4 py-2 rounded transition-colors ${
-            selected === index
+            selectedIndex === index
               ? "bg-blue-500 text-white"
               : "bg-gray-400 text-white"
           }`}
