@@ -5,21 +5,20 @@ interface StatusIconProps {
 }
 
 const StatusIcon: React.FC<StatusIconProps> = ({ status }) => {
-  // Definir colores y el ícono según el estado
   const statusStyles = {
     success: {
-      bgColor: "bg-green-300", // Fondo verde claro
-      iconColor: "text-green-600", // Check verde
-      icon: <MdCheck className="text-7xl" />, // Icono grande
+      bgColor: "bg-green-300",
+      iconColor: "text-green-600",
+      icon: <MdCheck className="text-7xl" />,
     },
     failed: {
-      bgColor: "bg-red-300", // Fondo rojo claro
-      iconColor: "text-red-600", // Cruz roja
+      bgColor: "bg-red-300",
+      iconColor: "text-red-600",
       icon: <MdClose className="text-5xl" />,
     },
     expired: {
-      bgColor: "bg-yellow-300", // Fondo amarillo claro
-      iconColor: "text-yellow-600", // Reloj amarillo
+      bgColor: "bg-yellow-300",
+      iconColor: "text-yellow-600",
       icon: <MdOutlineAccessTime className="text-5xl" />,
     },
   };
