@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,7 +7,7 @@
 /* Estilos globales */
 body {
   @apply bg-white text-gray-900; /* Fondo blanco y texto gris oscuro */
-  font-family: "Inter", sans-serif; /* Fuente predeterminada */
+  font-family: "Nunito", sans-serif;
 }
 
 /* Estilos para el footer */
