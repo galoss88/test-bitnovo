@@ -1,22 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlineTimer } from "react-icons/md";
 
 interface TimeRelojProps {
   className?: string;
-  initialTime?: number; // en segundos
+  initialTime?: number;
+  onExpire?: () => void;
 }
 
 const TimeReloj: React.FC<TimeRelojProps> = ({
   className = "",
   initialTime = 300,
+  onExpire,
 }) => {
   const [timeLeft, setTimeLeft] = useState<number>(initialTime);
 
+  //Si el tiempo ya expiro, se ejecuta la funcion onExpire
   useEffect(() => {
-    if (timeLeft <= 0) return;
-    const interval = setInterval(() => setTimeLeft((t) => t - 1), 1000);
+    if (timeLeft <= 0) {
+      onExpire?.();
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setTimeLeft((t) => {
+        if (t - 1 <= 0) {
+          clearInterval(interval);
+          onExpire?.();
+        }
+        return t - 1;
+      });
+    }, 1000);
+
     return () => clearInterval(interval);
-  }, [timeLeft]);
+  }, [timeLeft, onExpire]);
 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
@@ -32,3 +48,4 @@ const TimeReloj: React.FC<TimeRelojProps> = ({
 };
 
 export default TimeReloj;
+

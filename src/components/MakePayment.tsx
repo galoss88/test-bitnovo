@@ -1,5 +1,6 @@
 import { useOrderContext } from "@/context/OrderContext";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
 import { MdErrorOutline } from "react-icons/md";
 import CopyableField from "./CopyableField";
 import PaymentCryptoDetail from "./PaymentCryptoDetail";
@@ -11,13 +12,31 @@ import Web3Payment from "./Web3Payment";
 const MakePayment = () => {
   const { order, paymentUri } = useOrderContext();
   const [selected, setSelected] = useState<number>(0);
+  const router = useRouter();
 
+  const expirationDate = order?.expired_time
+    ? new Date(order.expired_time).getTime()
+    : null;
+  const currentTime = new Date().getTime();
+  const timeLeft = expirationDate
+    ? Math.max(Math.floor((expirationDate - currentTime) / 1000), 0)
+    : 0;
+
+  const handleExpiration = useCallback(() => {
+    console.warn("⏳ Tiempo agotado, redirigiendo a /payment/expired");
+    router.push("/payment/expired");
+  }, [router]);
+  
   if (!order) return null;
 
   return (
     <div className="flex flex-col items-center text-black p-6 bg-white rounded-lg shadow-md max-w-lg mx-auto">
-      {/* Temporizador */}
-      <TimeReloj className="text-xl" initialTime={300} />
+      {/* ⏳ Temporizador con tiempo real basado en `expired_time` */}
+      <TimeReloj
+        className="text-xl"
+        initialTime={timeLeft}
+        onExpire={handleExpiration}
+      />
 
       {/* Selector de Métodos */}
       <PaymentMethodToggle
@@ -31,7 +50,6 @@ const MakePayment = () => {
       ) : (
         <Web3Payment order={order} />
       )}
-      {/* Código QR */}
 
       {/* Detalles del Pago */}
       <PaymentCryptoDetail
