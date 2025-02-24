@@ -1,7 +1,6 @@
 import apiClient from "@/infraestructure/apiClient";
 import { CreateOrderParams, IOrder } from "@/lib/api/types";
 
-// ✅ Función para guardar `payment_uri` en `localStorage`
 function savePaymentData(order: IOrder) {
   if (order.identifier && order.payment_uri) {
     localStorage.setItem(`payment_uri`, order.payment_uri);
@@ -9,7 +8,9 @@ function savePaymentData(order: IOrder) {
 }
 
 // ✅ Función de servicio para crear un pago
-export async function createPayment(params: CreateOrderParams): Promise<IOrder> {
+export async function createPayment(
+  params: CreateOrderParams
+): Promise<IOrder> {
   try {
     const response = await apiClient.post("/orders/", params, {
       headers: {
@@ -19,7 +20,6 @@ export async function createPayment(params: CreateOrderParams): Promise<IOrder> 
 
     const order: IOrder = response.data;
 
-    // 🔹 Guardamos `payment_uri` en localStorage
     savePaymentData(order);
 
     return order;

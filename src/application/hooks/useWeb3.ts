@@ -39,9 +39,9 @@ export const useWeb3 = () => {
         value: parseEther(order.crypto_amount.toString()),
       });
 
-      console.log("📡 Transacción enviada:", tx);
+      // console.log("📡 Transacción enviada:", tx);
       await tx.wait();
-      console.log("✅ Transacción confirmada.");
+      // console.log("✅ Transacción confirmada.");
     } catch (error) {
       console.error("❌ Error en la transacción:", error);
     }

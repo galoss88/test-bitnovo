@@ -21,19 +21,19 @@ export default function useWebSocket(
     socketRef.current = socket;
 
     socket.onmessage = (event) => {
-      console.log("📩 WebSocket mensaje recibido:", event.data);
+      // console.log("📩 WebSocket mensaje recibido:", event.data);
       try {
         const updatedOrder: Partial<IGetOrderInfo> = JSON.parse(event.data);
         onUpdate(updatedOrder);
 
         // 🔥 Redirigir a la pantalla correspondiente según el estado
         if (updatedOrder.status === "CO" || updatedOrder.status === "AC") {
-          console.log("✅ Pago completado, redirigiendo...");
+          // console.log("✅ Pago completado, redirigiendo...");
           router.push("/payment/success");
         }
 
         if (updatedOrder.status === "EX" || updatedOrder.status === "OC") {
-          console.warn("❌ Pago expirado, redirigiendo...");
+          // console.warn("❌ Pago expirado, redirigiendo...");
           router.push("/payment/failed");
         }
       } catch (error) {

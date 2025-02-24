@@ -2,12 +2,11 @@
 
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-
 import { useOrder } from "@/application/hooks/useOrder";
 import useWebSocket from "@/application/hooks/useWebSocket";
 import MakePayment from "@/components/MakePayment";
 import ResumeOrder from "@/components/Resume";
-import OrderContext from "@/context/OrderContext";
+import OrderContext from "@/application/context/OrderContext";
 import { IGetOrderInfo } from "@/lib/api/types";
 import { formatDate } from "@/utils/formatDate";
 
@@ -28,7 +27,7 @@ export default function PaymentPage() {
 
   // WebSocket para recibir actualizaciones en tiempo real
   useWebSocket(updatedOrder?.identifier ?? "", (data) => {
-    console.log("🔄 Actualización de pedido recibida:", data);
+    // console.log("🔄 Actualización de pedido recibida:", data);
     setUpdatedOrder((prev) =>
       prev ? { ...prev, ...data } : (data as IGetOrderInfo)
     );
