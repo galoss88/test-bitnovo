@@ -1,22 +1,23 @@
 import { MdContentCopy } from "react-icons/md";
 
-// Muestra el detalle del envío en criptomonedas con un botón para copiar el valor
-export const PaymentCryptoDetail = ({
+const PaymentCryptoDetail = ({
   amount,
   currency,
 }: {
   amount: number;
   currency: string;
 }) => {
-  const handleCopy = () => {
+  const handleCopy = () =>
     navigator.clipboard.writeText(`${amount} ${currency}`);
-  };
 
   return (
-    <div className="mt-4">
-      <div className="flex items-center gap-2">
-        <span className="text-lg font-medium">
-          Enviar {amount} {currency}
+    <div className="mt-4 text-center">
+      <div className="flex items-center justify-center gap-2 text-lg font-medium">
+        <span>
+          Enviar{" "}
+          <strong>
+            {amount.toFixed(2)} {currency}
+          </strong>
         </span>
         <button
           onClick={handleCopy}
@@ -28,3 +29,5 @@ export const PaymentCryptoDetail = ({
     </div>
   );
 };
+
+export default PaymentCryptoDetail;

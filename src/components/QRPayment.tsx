@@ -24,9 +24,7 @@ export default function QRPayment({
         <p className="text-sm text-gray-500">QR no disponible</p>
       )}
 
-      <p className="mt-4 text-sm text-gray-700">
-        <strong>Dirección de pago:</strong> {order?.address ?? "No disponible"}
-      </p>
+     
     </div>
   );
 }

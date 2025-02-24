@@ -1,4 +1,5 @@
 "use client";
+import "@/styles/globals.css";
 
 import { useOrder } from "@/application/hooks/useOrder";
 import useWebSocket from "@/application/hooks/useWebSocket";
@@ -12,14 +13,13 @@ import { useEffect, useState } from "react";
 
 export default function PaymentPage() {
   const params = useParams();
-  const id = Array.isArray(params.id) ? params.id[0] : params.id;
-
+  const id = Array.isArray(params?.id) ? params?.id[0] : params?.id;
+  console.log("id, id", id); //
   // Obtener la orden desde el hook
   const { order, loading } = useOrder(id ?? "");
   const [updatedOrder, setUpdatedOrder] = useState<IGetOrderInfo | null>(null);
   const [paymentUri, setPaymentUri] = useState<string | null>(null);
 
- 
   useEffect(() => {
     if (order) {
       setUpdatedOrder(order);
@@ -42,16 +42,15 @@ export default function PaymentPage() {
   });
 
   if (loading) return <p className="text-center text-gray-500">Cargando...</p>;
-  if (!updatedOrder)
+  if (!order)
     return (
       <p className="text-center text-red-500">Error obteniendo la orden</p>
     );
 
-
   const resumeOrderItems = [
     {
       label: "Importe",
-      value: `${updatedOrder.fiat_amount.toFixed(2)} ${updatedOrder.fiat}`,
+      value: `${updatedOrder?.fiat_amount.toFixed(2)} ${updatedOrder?.fiat}`,
     },
     {
       label: "Moneda seleccionada",
@@ -65,17 +64,17 @@ export default function PaymentPage() {
             />
           )} */}
           <span className="text-sm font-medium text-gray-900">
-            {updatedOrder.currency_id}
+            {updatedOrder?.currency_id}
           </span>
         </div>
       ),
     },
     {
       label: "Comercio",
-      value: updatedOrder.merchant_device || "Tienda de ejemplo",
+      value: updatedOrder?.merchant_device || "Tienda de ejemplo",
     },
-    { label: "Fecha", value: formatDate(updatedOrder.created_at) },
-    { label: "Concepto", value: updatedOrder.notes || "Pago de ejemplo" },
+    { label: "Fecha", value: formatDate(updatedOrder?.created_at) },
+    { label: "Concepto", value: updatedOrder?.notes || "Pago de ejemplo" },
   ];
 
   return (

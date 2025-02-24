@@ -1,44 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { MdOutlineTimer } from "react-icons/md";
 
-// Definición de las props, ahora incluyendo configuración para el temporizador.
 interface TimeRelojProps {
   className?: string;
-  initialTime?: number;
-  intervalMs?: number;
+  initialTime?: number; // en segundos
 }
-
-// Custom hook que ahora puede recibir parámetros externos para mayor flexibilidad.
-const useTimer = (
-  initialTime: number = 0,
-  intervalMs: number = 1000
-): number => {
-  const [time, setTime] = useState<number>(initialTime);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTime((prev) => prev + 1);
-    }, intervalMs);
-    return () => clearInterval(intervalId);
-  }, [intervalMs]);
-
-  return time;
-};
 
 const TimeReloj: React.FC<TimeRelojProps> = ({
   className = "",
-  initialTime = 0,
-  intervalMs = 1000,
+  initialTime = 300,
 }) => {
-  const seconds = useTimer(initialTime, intervalMs);
+  const [timeLeft, setTimeLeft] = useState<number>(initialTime);
+
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+    const interval = setInterval(() => setTimeLeft((t) => t - 1), 1000);
+    return () => clearInterval(interval);
+  }, [timeLeft]);
+
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
 
   return (
-    <span
-      className={`flex gap-3 text-sm font-medium text-gray-900 ${className}`}
+    <div
+      className={`flex items-center gap-2 text-gray-900 font-medium ${className}`}
     >
-      <MdOutlineTimer />
-      {seconds}
-    </span>
+      <MdOutlineTimer size={20} />
+      {minutes}:{seconds.toString().padStart(2, "0")}
+    </div>
   );
 };
 
