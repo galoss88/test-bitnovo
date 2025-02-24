@@ -1,13 +1,18 @@
-import { useState } from "react";
-import { createPayment } from "@/lib/services/paymentService";
 import { IOrder } from "@/lib/api/types";
+import { createPayment } from "@/application/services/PaymentService";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export function usePayment() {
   const [loading, setLoading] = useState(false);
+  const [infoPayment, setInfoPayment] = useState<IOrder | null>(null);
   const router = useRouter();
 
-  const handleCreatePayment = async (amount: string, currencyId: string, notes: string) => {
+  const handleCreatePayment = async (
+    amount: string,
+    currencyId: string,
+    notes: string
+  ) => {
     setLoading(true);
     try {
       const order: IOrder = await createPayment({
@@ -15,7 +20,7 @@ export function usePayment() {
         input_currency: currencyId,
         notes,
       });
-
+      setInfoPayment(order);
       // ✅ Redirigir después de la creación del pago
       router.push(`/payment/${order.identifier}`);
     } catch (error) {
@@ -25,5 +30,5 @@ export function usePayment() {
     }
   };
 
-  return { handleCreatePayment, loading };
+  return { handleCreatePayment, loading, infoPayment };
 }

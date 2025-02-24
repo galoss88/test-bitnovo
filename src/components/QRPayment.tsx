@@ -7,7 +7,7 @@ export default function QRPayment({
   order,
   paymentUri,
 }: {
-  order: IGetOrderInfo | null;
+  order: IGetOrderInfo;
   paymentUri: string | null;
 }) {
   const qrValue = paymentUri ?? order?.address;

@@ -1,4 +1,4 @@
-import apiClient from "@/lib/apiClient";
+import apiClient from "@/infraestructure/apiClient";
 
 export interface ICurrency {
   id: string;

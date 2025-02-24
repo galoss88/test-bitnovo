@@ -1,4 +1,4 @@
-import apiClient from "@/lib/apiClient";
+import apiClient from "@/infraestructure/apiClient";
 import { CreateOrderParams, IOrder } from "@/lib/api/types";
 
 // ✅ Función para guardar `payment_uri` en `localStorage`

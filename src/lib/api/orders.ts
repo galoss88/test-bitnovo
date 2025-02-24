@@ -1,4 +1,4 @@
-import apiClient from "@/lib/apiClient";
+import apiClient from "@/infraestructure/apiClient";
 import { CreateOrderParams, IGetOrderInfo, IOrder } from "./types";
 
 export async function getOrderInfo(orderId: string): Promise<IGetOrderInfo> {

@@ -1,7 +1,7 @@
-"use client";
+import "@/styles/globals.css";
 
+import { usePayment } from "@/application/hooks/usePayment";
 import PaymentForm from "@/components/PaymentForm";
-import { usePayment } from "@/hooks/usePayment";
 import { getCurrencies, ICurrency } from "@/lib/api/currencies";
 import { useEffect, useState } from "react";
 

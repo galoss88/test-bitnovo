@@ -1,6 +1,6 @@
 "use client";
 
-import { useWeb3 } from "@/hooks/useWeb3";
+import { useWeb3 } from "@/application/hooks/useWeb3";
 import { FaEthereum } from "react-icons/fa";
 
 export default function Web3Payment() {
