@@ -1,11 +1,12 @@
+import StatusIcon from "@/components/StatusIcon";
 import Link from "next/link";
-import { MdOutlineAccessTime } from "react-icons/md";
 
 export default function PaymentExpired() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white shadow-lg rounded-xl p-8 text-center max-w-sm">
-        <MdOutlineAccessTime className="text-yellow-500 mx-auto text-6xl" />
+        <StatusIcon status="expired" />
+
         <h1 className="text-2xl font-semibold text-gray-900 mt-4">
           ¡Pago expirado!
         </h1>
