@@ -14,7 +14,7 @@ const TimeReloj: React.FC<TimeRelojProps> = ({
 }) => {
   const [timeLeft, setTimeLeft] = useState<number>(initialTime);
 
-  //Si el tiempo ya expiro, se ejecuta la funcion onExpire
+  // Manejo del temporizador
   useEffect(() => {
     if (timeLeft <= 0) {
       onExpire?.();
@@ -39,13 +39,14 @@ const TimeReloj: React.FC<TimeRelojProps> = ({
 
   return (
     <div
-      className={`flex items-center gap-2 text-gray-900 font-medium ${className}`}
+      className={`flex items-center gap-1 text-primary font-medium ${className}`}
     >
-      <MdOutlineTimer size={20} />
-      {minutes}:{seconds.toString().padStart(2, "0")}
+      <MdOutlineTimer size={22} className="text-blue-900" />
+      <span className="text-lg tracking-wide">
+        {minutes}:{seconds.toString().padStart(2, "0")}
+      </span>
     </div>
   );
 };
 
 export default TimeReloj;
-
