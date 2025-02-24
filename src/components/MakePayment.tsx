@@ -50,22 +50,28 @@ const MakePayment = () => {
       ) : (
         <Web3Payment order={order} />
       )}
+      <div className="bg-white p-1 rounded-xl flex flex-col items-center">
+        {/* Detalles del Pago */}
+        <PaymentCryptoDetail
+          amount={order.fiat_amount}
+          currency={order.currency_id ?? "N/A"}
+        />
 
-      {/* Detalles del Pago */}
-      <PaymentCryptoDetail
-        amount={order.fiat_amount}
-        currency={order.currency_id ?? "N/A"}
-      />
+        {/* Dirección de pago */}
+        <CopyableField
+          value={order.address ?? "Sin código"}
+          valueClassName="text-primary font-medium"
+        />
 
-      {/* Dirección de pago */}
-      <CopyableField value={order.address ?? "Sin código"} />
-
-      {/* Etiqueta de destino */}
-      <CopyableField
-        label="Etiqueta de destino"
-        value={order.tag_memo ?? "N/A"}
-        LeadingIcon={MdErrorOutline}
-      />
+        {/* Etiqueta de destino */}
+        <CopyableField
+          label="Etiqueta de destino"
+          value={order?.tag_memo ? order?.tag_memo : "N/A"}
+          LeadingIcon={MdErrorOutline}
+          labelClassName="text-primary font-medium"
+          valueClassName="text-primary font-bold"
+        />
+      </div>
     </div>
   );
 };

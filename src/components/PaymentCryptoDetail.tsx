@@ -1,4 +1,5 @@
-import { MdContentCopy } from "react-icons/md";
+import { colorApp } from "@/styles/colours";
+import CopyableField from "./CopyableField";
 
 const PaymentCryptoDetail = ({
   amount,
@@ -7,26 +8,14 @@ const PaymentCryptoDetail = ({
   amount: number;
   currency: string;
 }) => {
-  const handleCopy = () =>
-    navigator.clipboard.writeText(`${amount} ${currency}`);
-
   return (
-    <div className="mt-4 text-center">
-      <div className="flex items-center justify-center gap-2 text-lg font-medium">
-        <span className="text-primary font-semibold">
-          Enviar{" "}
-          <strong className="text-primary font-bold">
-            {amount.toFixed(2)} {currency}
-          </strong>
-        </span>
-
-        <button
-          onClick={handleCopy}
-          className="p-2 bg-gray-200 rounded hover:bg-gray-300"
-        >
-          <MdContentCopy size={20} className="text-gray-700" />
-        </button>
-      </div>
+    <div className="flex items-center gap-2 mt-4">
+      <CopyableField
+        label="Enviar"
+        value={`${amount.toFixed(2)} ${currency}`}
+        labelClassName="text-primary font-medium"
+        valueClassName="text-primary font-bold"
+      />
     </div>
   );
 };
