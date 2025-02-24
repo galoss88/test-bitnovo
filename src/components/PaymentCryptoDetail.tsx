@@ -1,4 +1,3 @@
-import { colorApp } from "@/styles/colours";
 import CopyableField from "./CopyableField";
 
 const PaymentCryptoDetail = ({
