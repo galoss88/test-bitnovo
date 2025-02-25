@@ -16,12 +16,11 @@ export function usePayment() {
     setLoading(true);
     try {
       const order: IOrder = await createPayment({
-        expected_output_amount: parseFloat(amount), // 🔹 Convertir a número
+        expected_output_amount: parseFloat(amount), 
         input_currency: currencyId,
         notes,
       });
       setInfoPayment(order);
-      // ✅ Redirigir después de la creación del pago
       router.push(`/payment/${order.identifier}`);
     } catch (error) {
       console.error("❌ Error creando el pago:", error);

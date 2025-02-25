@@ -36,7 +36,8 @@ function PaymentContent({ currencies }: PaymentContentProps) {
     );
   }
 
-  if (!order) {
+  if (!order && !loading) {
+ 
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p className="text-center text-red-500">Error obteniendo la orden</p>
@@ -45,13 +46,13 @@ function PaymentContent({ currencies }: PaymentContentProps) {
   }
 
   const selectedCurrency = (currencies || []).find(
-    (currency) => currency.id === order.currency_id
+    (currency) => currency.id === order?.currency_id
   );
 
   const resumeOrderItems = [
     {
       label: "Importe",
-      value: `${order.fiat_amount.toFixed(2)} ${order.fiat}`,
+      value: `${order?.fiat_amount?.toFixed(2)} ${order?.fiat}`,
     },
     {
       label: "Moneda seleccionada",
@@ -70,9 +71,9 @@ function PaymentContent({ currencies }: PaymentContentProps) {
         "N/A"
       ),
     },
-    { label: "Comercio", value: order.merchant_device || "Tienda de ejemplo" },
-    { label: "Fecha", value: formatDate(order.created_at ?? "S/fecha") },
-    { label: "Concepto", value: order.notes || "Pago de ejemplo" },
+    { label: "Comercio", value: order?.merchant_device || "Tienda de ejemplo" },
+    { label: "Fecha", value: formatDate(order?.created_at ?? "S/fecha") },
+    { label: "Concepto", value: order?.notes || "Pago de ejemplo" },
   ];
 
   return (
