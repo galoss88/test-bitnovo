@@ -87,6 +87,7 @@ function PaymentContent({ currencies }: PaymentContentProps) {
     { label: "Fecha", value: formatDate(order.created_at ?? "S/fecha") },
     { label: "Concepto", value: order.notes || "Pago de ejemplo" },
   ];
+  if (order.status !== "PE") return null;
 
   return (
     <div className="container mx-auto p-4 flex flex-col lg:flex-row justify-center items-start gap-6 md:gap-10 min-h-[90vh] max-w-screen-xl md:flex-col">

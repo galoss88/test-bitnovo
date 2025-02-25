@@ -28,7 +28,6 @@ const MakePayment = () => {
   }, [router]);
 
   if (!order) return null;
-
   return (
     <div className="bg-white p-6 rounded-xl flex flex-col items-center shadow-lg">
       {/* ⏳ Temporizador con tiempo real basado en `expired_time` */}
