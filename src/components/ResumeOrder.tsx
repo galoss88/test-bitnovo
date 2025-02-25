@@ -8,7 +8,7 @@ export interface IResume {
 const ResumeItem = ({ label, value }: IResume) => (
   <div className="flex justify-between items-center w-full py-3 border-b border-gray-200 last:border-0">
     <span className="text-primary font-bold">
-      {label ? `${label}:` : "N/A"}:
+      {label ? `${label}` : "N/A"}:
     </span>
     <span className="text-gray-900 font-semibold">{value || "Sin datos"}</span>
   </div>
@@ -28,7 +28,7 @@ const ResumeOrder = ({ resumeOrderItems = [] }: ResumeOrderProps) => {
   }
 
   return (
-    <div className="bg-gray-100 bg-opacity-80 rounded-xl p-6">
+    <div className="bg-gray-100 bg-opacity-80 rounded-xl p-6 w-100 h-100">
       <div className="space-y-4">
         {resumeOrderItems.map((item) => (
           <ResumeItem key={item.label} {...item} />

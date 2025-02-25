@@ -1,18 +1,19 @@
-import { useCurrenciesContext } from "@/context/Providers/CurrencyProvider";
 import { useOrderContext } from "@/context/OrderContext";
+import { useCurrenciesContext } from "@/context/Providers/CurrencyProvider";
 import { OrderProvider } from "@/context/Providers/OrderProvider"; // ✅ Asegurar que importamos bien el Provider
 import { ICurrency } from "@/lib/api/currencies";
 import { formatDate } from "@/utils/formatDate";
 import { useRouter } from "next/router";
 import MakePayment from "../../../components/MakePayment";
 import ResumeOrder from "../../../components/ResumeOrder";
+import SpinnerLoading from "../../../components/SpinnerLoading";
 
 export default function PaymentPage() {
   const { currencies } = useCurrenciesContext();
   const router = useRouter();
   const id = Array.isArray(router.query.id)
     ? router.query.id[0]
-    : router.query.id ?? ""; // ✅ Convertimos a string correctamente
+    : router.query.id ?? "";
 
   return (
     <OrderProvider orderId={id}>
@@ -26,21 +27,25 @@ interface PaymentContentProps {
 }
 
 function PaymentContent({ currencies }: PaymentContentProps) {
-  const { order, loading } = useOrderContext(); // ✅ Ahora sí está dentro de OrderProvider
+  const { order, loading } = useOrderContext();
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-center text-gray-500">Cargando...</p>
+      <div className="flex flex-col items-center justify-center min-h-screen gap-4 p-4">
+        <SpinnerLoading />
+        <p className="text-gray-700 dark:text-gray-300 text-lg text-center">
+          Cargando creación del pago...
+        </p>
       </div>
     );
   }
 
-  if (!order && !loading) {
- 
+  if (!order) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-center text-red-500">Error obteniendo la orden</p>
+      <div className="flex items-center justify-center min-h-screen p-4">
+        <p className="text-center text-red-500 text-lg">
+          Error obteniendo la orden
+        </p>
       </div>
     );
   }
@@ -61,7 +66,7 @@ function PaymentContent({ currencies }: PaymentContentProps) {
           <img
             src={selectedCurrency.image}
             alt={selectedCurrency.name}
-            className="w-6 h-6 mr-2"
+            className="w-6 h-6"
           />
           <span className="text-sm text-primary font-bold">
             {selectedCurrency.symbol}
@@ -77,17 +82,20 @@ function PaymentContent({ currencies }: PaymentContentProps) {
   ];
 
   return (
-    <div className="container mx-auto p-6 flex flex-col md:flex-row justify-center gap-8">
-      <div className="w-full md:w-1/2 bg-white p-6 rounded-xl">
-        <h1 className="text-xl text-primary font-bold mb-4">
+    <div className="container mx-auto p-4 flex flex-col lg:flex-row justify-center items-start gap-6 md:gap-10 min-h-[90vh] max-w-screen-xl md:flex-col">
+      <div className="flex-grow h-full w-full max-w-screen-lg bg-white p-6 rounded-xl flex flex-col">
+        <h1 className="text-xl text-primary font-bold mb-4 md:text-left">
           Resumen del pedido
         </h1>
         <ResumeOrder resumeOrderItems={resumeOrderItems} />
       </div>
-      <div className="w-full md:w-1/2 bg-white p-6 rounded-xl">
-        <h1 className="text-xl text-primary font-bold mb-4">Realiza el pago</h1>
+      <div className="flex-grow h-full w-full max-w-screen-lg bg-white p-6 rounded-xl flex flex-col">
+        <h1 className="text-xl text-primary font-bold mb-4 md:text-left">
+          Realiza el pago
+        </h1>
         <MakePayment />
       </div>
     </div>
   );
+  
 }
