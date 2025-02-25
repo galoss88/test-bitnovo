@@ -23,9 +23,31 @@ const MakePayment = () => {
     : 0;
 
   const handleExpiration = useCallback(() => {
-    console.warn("⏳ Tiempo agotado, redirigiendo a /payment/expired");
-    router.push("/payment/expired");
-  }, [router]);
+    if (!order) return;
+
+    switch (order.status) {
+      case "CO": // Completado correctamente
+        router.push("/payment/success");
+        break;
+      case "AC": // Aceptado
+        router.push("/payment/success");
+        break;
+
+      case "EX": // Expirado
+        router.push("/payment/failed");
+        break;
+      case "OC": // Orden cancelada
+        router.push("/payment/failed");
+        break;
+
+      default:
+        console.warn(
+          "⚠️ Estado desconocido o pendiente, permaneciendo en la misma página."
+        );
+        router.push("/");
+
+    }
+  }, [router, order]);
 
   if (!order) return null;
 
