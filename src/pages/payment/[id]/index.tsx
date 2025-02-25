@@ -1,9 +1,10 @@
 import { useOrderContext } from "@/context/OrderContext";
 import { useCurrenciesContext } from "@/context/Providers/CurrencyProvider";
-import { OrderProvider } from "@/context/Providers/OrderProvider"; // ✅ Asegurar que importamos bien el Provider
+import { OrderProvider } from "@/context/Providers/OrderProvider";
 import { ICurrency } from "@/lib/api/currencies";
 import { formatDate } from "@/utils/formatDate";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import MakePayment from "../../../components/MakePayment";
 import ResumeOrder from "../../../components/ResumeOrder";
 import SpinnerLoading from "../../../components/SpinnerLoading";
@@ -28,36 +29,42 @@ interface PaymentContentProps {
 
 function PaymentContent({ currencies }: PaymentContentProps) {
   const { order, loading } = useOrderContext();
+  const router = useRouter();
 
-  if (loading) {
+  useEffect(() => {
+    if (!order) return;
+
+    if (["CO", "AC"].includes(order.status)) {
+      router.replace("/payment/success");
+    } else if (["OC"].includes(order.status)) {
+      router.replace("/payment/failed");
+    } else if (["EX"].includes(order.status)) {
+      router.replace("/payment/expired");
+    }
+  }, [order, router]);
+
+  // ⚠️ Muestra solo el spinner mientras carga la orden
+  if (loading || !order) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-4 p-4">
         <SpinnerLoading />
         <p className="text-gray-700 dark:text-gray-300 text-lg text-center">
-          Cargando creación del pago...
-        </p>
-      </div>
-    );
-  }
-
-  if (!order) {
-    return (
-      <div className="flex items-center justify-center min-h-screen p-4">
-        <p className="text-center text-red-500 text-lg">
-          Error obteniendo la orden
+          {loading
+            ? "Cargando creación del pago..."
+            : "Error obteniendo la orden"}
         </p>
       </div>
     );
   }
 
   const selectedCurrency = (currencies || []).find(
-    (currency) => currency.id === order?.currency_id
+    (currency) => currency.id === order.currency_id
   );
 
   const resumeOrderItems = [
     {
       label: "Importe",
-      value: `${order?.fiat_amount?.toFixed(2)} ${order?.fiat}`,
+      value: `${order.fiat_amount?.toFixed(2)} ${order.fiat}`,
     },
     {
       label: "Moneda seleccionada",
@@ -76,9 +83,9 @@ function PaymentContent({ currencies }: PaymentContentProps) {
         "N/A"
       ),
     },
-    { label: "Comercio", value: order?.merchant_device || "Tienda de ejemplo" },
-    { label: "Fecha", value: formatDate(order?.created_at ?? "S/fecha") },
-    { label: "Concepto", value: order?.notes || "Pago de ejemplo" },
+    { label: "Comercio", value: order.merchant_device || "Tienda de ejemplo" },
+    { label: "Fecha", value: formatDate(order.created_at ?? "S/fecha") },
+    { label: "Concepto", value: order.notes || "Pago de ejemplo" },
   ];
 
   return (
@@ -97,5 +104,4 @@ function PaymentContent({ currencies }: PaymentContentProps) {
       </div>
     </div>
   );
-  
 }
